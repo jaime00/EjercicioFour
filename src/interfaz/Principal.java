@@ -5,6 +5,8 @@
  */
 package interfaz;
 
+import javax.swing.JOptionPane;
+
 
 
 /**
@@ -16,9 +18,10 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
-    
+    double v[];
     public Principal() {
         initComponents();
+        txtLongitud.requestFocusInWindow();
     }
 
     /**
@@ -86,15 +89,30 @@ public class Principal extends javax.swing.JFrame {
         jPanel3.add(cmdCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 150, -1));
 
         cmdLlenarAutomaticamente.setText("Llenar Automaticamente");
+        cmdLlenarAutomaticamente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdLlenarAutomaticamenteActionPerformed(evt);
+            }
+        });
         jPanel3.add(cmdLlenarAutomaticamente, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, -1));
 
         cmdLlenarManual.setText("Llenar Manual");
+        cmdLlenarManual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdLlenarManualActionPerformed(evt);
+            }
+        });
         jPanel3.add(cmdLlenarManual, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 150, -1));
 
         cmdBorrar.setText("Borrar");
+        cmdBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdBorrarActionPerformed(evt);
+            }
+        });
         jPanel3.add(cmdBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 150, -1));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 40, 170, 200));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 170, 200));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Mostrar"));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -112,18 +130,20 @@ public class Principal extends javax.swing.JFrame {
         txtResultado.setRows(5);
         jScrollPane1.setViewportView(txtResultado);
 
-        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 180, 110));
+        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 200, 110));
 
         jLabel3.setText("Resultado:");
         jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 200, 210));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 220, 210));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,20 +160,79 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtLongitudActionPerformed
 
     private void txtLongitudKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLongitudKeyTyped
-
-        
-        
+    
+        char c=evt.getKeyChar(); 
+          if(!Character.isDigit(c)) { 
+              getToolkit().beep(); 
+              evt.consume(); 
+          }  
     }//GEN-LAST:event_txtLongitudKeyTyped
 
     private void cmdCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCrearActionPerformed
-
+      
+        if(txtLongitud.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Digite la longitud","Falta un elemento",JOptionPane.INFORMATION_MESSAGE);
+          txtLongitud.requestFocusInWindow();
+        }else if(Integer.parseInt(txtLongitud.getText().trim())==0){
+            JOptionPane.showMessageDialog(this, "No se puede digitar cero en la longitud","ERROR",JOptionPane.ERROR_MESSAGE);
+            txtLongitud.requestFocusInWindow();
+            txtLongitud.selectAll();
+        }else{
+           int longitud= Integer.parseInt(txtLongitud.getText());
+            v= new double [longitud];
+            JOptionPane.showMessageDialog(this, "Vector creado exitosamente");    
+        }
        
         
     }//GEN-LAST:event_cmdCrearActionPerformed
 
     private void cmdNumerosRepetidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdNumerosRepetidosActionPerformed
-        // TODO add your handling code here:
+
+            double cont=1,aux=0;
+        for (int i = 0; i < v.length; i++) {
+           
+            for (int j = i; j <v.length; j++) {
+          
+                if(v[i]==(v[j]) && (i!=j)){  //
+                    cont++;
+                    aux=v[i];            
+                }
+                }
+           }
+        if(cont>=2){
+            txtResultado.append("el numero que mas se repite es el "+aux);
+           txtResultado.append("\n y se repite "+(cont)+" veces");
+        }else{
+            txtResultado.append("no hay numeros repetidos");
+            }
+        
+                                                     
     }//GEN-LAST:event_cmdNumerosRepetidosActionPerformed
+
+    private void cmdLlenarManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLlenarManualActionPerformed
+        double n;
+        for (int i = 0; i < v.length; i++) {
+             n =Double.parseDouble(JOptionPane.showInputDialog(this,"Digite el elemento (pos "+i+")"));
+             v[i]=n;
+        }
+        JOptionPane.showMessageDialog(this, "Vector Llenado exitosamente");
+    }//GEN-LAST:event_cmdLlenarManualActionPerformed
+
+    private void cmdLlenarAutomaticamenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLlenarAutomaticamenteActionPerformed
+            double n;
+        for (int i = 0; i < v.length; i++) {
+             n=(int)(Math.random()*50+ 1);
+             v[i]=n;
+         }
+        JOptionPane.showMessageDialog(this, "Vector llenado exitosamente");        // TODO add your handling code here:
+    }//GEN-LAST:event_cmdLlenarAutomaticamenteActionPerformed
+
+    private void cmdBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarActionPerformed
+
+       txtLongitud.setText("");
+       txtResultado.setText("");
+       txtLongitud.requestFocusInWindow(); 
+    }//GEN-LAST:event_cmdBorrarActionPerformed
 
     /**
      * @param args the command line arguments
